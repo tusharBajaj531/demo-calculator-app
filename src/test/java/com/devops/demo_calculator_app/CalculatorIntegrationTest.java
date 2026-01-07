@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CalculatorIntegrationTest {
@@ -19,7 +19,7 @@ class CalculatorIntegrationTest {
 
     @Test
     void testAddEndpoint() {
-        String response = this.restTemplate
+        String response = restTemplate
                 .getForObject("http://localhost:" + port + "/calculator/add/2/3", String.class);
 
         assertThat(response).isEqualTo("5");
