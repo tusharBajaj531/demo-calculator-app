@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator App</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        input { margin: 5px; padding: 5px; }
+        button { margin: 5px; padding: 5px 10px; }
+        h2 { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Simple Calculator</h1>
+
+<input type="number" id="a" placeholder="Number A">
+<input type="number" id="b" placeholder="Number B">
+<br>
+
+<button onclick="calculate('add')">Add</button>
+<button onclick="calculate('sub')">Subtract</button>
+<button onclick="calculate('mul')">Multiply</button>
+<button onclick="calculate('div')">Divide</button>
+
+<h2>Result: <span id="result">---</span></h2>
+
+<script>
+function calculate(op) {
+    const a = document.getElementById("a").value;
+    const b = document.getElementById("b").value;
+
+    if (a === "" || b === "") {
+        alert("Enter both numbers");
+        return;
+    }
+
+    fetch(`/calculator/${op}/${a}/${b}`)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("result").innerText = data;
+        });
+}
+</script>
+
+</body>
+</html>
