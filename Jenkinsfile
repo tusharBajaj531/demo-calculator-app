@@ -22,16 +22,12 @@ pipeline {
                 sh './mvnw clean test'
             }
 
-            post {
-               always {
-                  junit 'target/surefire-reports/*.xml'
-                }
-            }
+            
         }
 
         stage ('Package'){
             steps{
-                sh './mvnw clean package -DskipTests'
+                sh './mvnw package -DskipTests'
             }
         }
         
@@ -52,6 +48,10 @@ pipeline {
         
     }
     
-    
+    post {
+           always {
+                  junit 'target/surefire-reports/*.xml'
+            }
+        }
     
 }
