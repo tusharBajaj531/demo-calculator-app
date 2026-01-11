@@ -16,27 +16,42 @@ pipeline {
             }
         }
         
-        stage('Checkout')
-        {
-            steps{
-                checkout scm
-            }
-        }
-        
         stage('Build and Test')
         {
             steps{
                 sh './mvnw clean test'
             }
+
+            post {
+               always {
+                  junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage ('Package'){
+            steps{
+                sh './mvnw clean package -DskipTests'
+            }
         }
         
+        stage('Build Docker Image')
+        {
+            steps{
+                sh 'docker rm -f demo-calculator-app-container || true'
+                sh 'docker rmi -f demo-calculator-app:0.0.1 || true'
+                sh 'docker build -t demo-calculator-app:0.0.1 .'
+            }
+        }
+
+        stage('Run Docker Container'){
+            steps{
+                sh 'docker run -d -p 8081:8081 --name demo-calculator-app-container demo-calculator-app:0.0.1'
+            }
+        }
         
     }
     
-    post {
-        always {
-            junit 'target/surefire-reports/*.xml'
-        }
-    }
+    
     
 }
